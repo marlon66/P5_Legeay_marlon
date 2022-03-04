@@ -77,30 +77,49 @@ function addToCart() {
     if (bearNumber.value > 0 && bearNumber.value < 100) {
       // ------ Création du produit qui sera ajouté au panier
       let productAdded = {
+        color: colorSelect.value,
         name: productCardName.innerHTML,
         price: parseFloat(productCardPrice.innerHTML),
         quantity: parseFloat(document.querySelector("#bearNum").value),
         _id: id,
       };
 
+
       // ----------------- Gestion du localStorage
       let arrayProductsInCart = [];
       
       // Si le localStorage existe, on récupère son contenu, on l'insère dans le tableau arrayProductsInCart, puis on le renvoit vers le localStorage avec le nouveau produit ajouté.
-      if (localStorage.getItem("products") !== null) {
+      console.log (JSON.parse(localStorage.getItem("products")));
+      if (JSON.parse(localStorage.getItem("products") !== null)) {
         arrayProductsInCart = JSON.parse(localStorage.getItem("products"));
         
         
         // Si le LS est vide, on le crée avec le produit ajouté
-      } 
+      } else {
         arrayProductsInCart.push(productAdded);
+        localStorage.setItem("products", JSON.stringify(arrayProductsInCart));
+      
+        return false;
+      }
+      
+        arrayProductsInCart.forEach(article=> {
+          if (article._id == productAdded._id && article.color == productAdded.color) {
+            article.quantity = article.quantity+1;
+           
+          } else {
+            arrayProductsInCart.push(productAdded);
+          }
+
+          
+        });
+        console.log (arrayProductsInCart);
         localStorage.setItem("products", JSON.stringify(arrayProductsInCart));
       
 
       // Effets visuels lors d'un ajout au panier
       confirmation.style.visibility = "visible";
       textConfirmation.innerHTML = `Vous avez ajouté ${bearNumber.value} nounours à votre panier !`;
-      setTimeout("location.reload(true);", 4000);
+
     } else {
       confirmation.style.visibility = "visible";
       textConfirmation.style.background = "red";

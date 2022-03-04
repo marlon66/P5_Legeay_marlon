@@ -1,5 +1,7 @@
 main();
 
+const productsDOM = document.querySelector(".products");
+
 function main() {
   getArticles();
 }
@@ -22,10 +24,17 @@ function getArticles() {
     .then(function (resultatAPI) {
       const articles = resultatAPI;
       console.log(articles);
+
+      displayProducts (articles);
+     
+
+
+      /*
       for (let article in articles) {
         let productCard = document.createElement("div");
         document.querySelector(".products").appendChild(productCard);
         productCard.classList.add("product");
+      
 
         let productLink = document.createElement("a");
         productCard.appendChild(productLink);
@@ -53,12 +62,34 @@ function getArticles() {
         productInfosDiv.appendChild(productInfoPrice);
         productInfoPrice.classList.add("product__infos__price");
 
+    
+
         // Formatage du prix pour l'afficher en euros
         resultatAPI[article].price = resultatAPI[article].price / 100;
         productInfoPrice.innerHTML = new Intl.NumberFormat("fr-FR", {
           style: "currency",
           currency: "EUR",
         }).format(resultatAPI[article].price);
+
       }
+      */
     });
 }
+
+function displayProducts(listofarticles) {
+  let productsthtml= "";
+  listofarticles.forEach(item => {
+    productsthtml += `<div class="product">
+    <a href="product.html?id=${item._id}" class="stretched-link">
+    <div class="product__img"><img src="${item.imageUrl}">
+    </div>
+    <div class="product__infos">
+    <div class="product__infos__title">${item.name}</div>
+    <div class="product__infos__price">${item.price/100},00&nbsp;€</div>
+    </div>
+    </a>
+    </div>` 
+  });
+  productsDOM.innerHTML = productsthtml;
+}
+
