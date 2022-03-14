@@ -32,6 +32,22 @@ h1 {
   background: #e1bb80;
 }
 
+.number-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  border-radius: 50%;
+  border: 0.5px solid black;
+  width: 25px;
+  height: 25px;
+  background-color: #352208;
+  font-size: 18px;
+  position: relative;
+  top: -50px;
+  left: 20px;
+}
+
 .header-container {
   width: 100%;
   display: -webkit-box;

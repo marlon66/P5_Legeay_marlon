@@ -1,3 +1,4 @@
+
 let params = new URL(document.location).searchParams;
 let id = params.get("id");
 
@@ -85,36 +86,33 @@ function addToCart() {
       };
 
 
-      // ----------------- Gestion du localStorage
-      let arrayProductsInCart = [];
+    // ----------------- Gestion du localStorage
       
-      // Si le localStorage existe, on récupère son contenu, on l'insère dans le tableau arrayProductsInCart, puis on le renvoit vers le localStorage avec le nouveau produit ajouté.
-      console.log (JSON.parse(localStorage.getItem("products")));
-      if (JSON.parse(localStorage.getItem("products") !== null)) {
-        arrayProductsInCart = JSON.parse(localStorage.getItem("products"));
-        
-        
-        // Si le LS est vide, on le crée avec le produit ajouté
-      } else {
-        arrayProductsInCart.push(productAdded);
-        localStorage.setItem("products", JSON.stringify(arrayProductsInCart));
-      
-        return false;
-      }
-      
-        arrayProductsInCart.forEach(article=> {
-          if (article._id == productAdded._id && article.color == productAdded.color) {
-            article.quantity = article.quantity+1;
-           
-          } else {
-            arrayProductsInCart.push(productAdded);
-          }
+// sert à éviter d'ajouter deux fois le même produit
+ let isArticleAlreadyInCart = false;
 
-          
-        });
-        console.log (arrayProductsInCart);
-        localStorage.setItem("products", JSON.stringify(arrayProductsInCart));
-      
+
+ let arrayProductsInCart = JSON.parse(localStorage.getItem("products"));
+
+  // Si le LS est vide, on le crée avec le produit ajouté
+ if (arrayProductsInCart == null) {
+   arrayProductsInCart = [];
+   arrayProductsInCart.push(productAdded);
+ } else {
+   arrayProductsInCart.forEach((article) => {
+     if (article._id == productAdded._id && article.color == productAdded.color) {
+       // si le produit existe on met à jour sa quantité
+       article.quantity = parseInt(article.quantity) + parseInt(productAdded.quantity);
+       isArticleAlreadyInCart = true;
+     }
+   });
+   if (!isArticleAlreadyInCart) {
+     arrayProductsInCart.push(productAdded);
+   }
+ }
+ localStorage.setItem("products", JSON.stringify(arrayProductsInCart));
+
+ getNumberArticlesInCart()
 
       // Effets visuels lors d'un ajout au panier
       confirmation.style.visibility = "visible";

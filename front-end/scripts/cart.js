@@ -1,3 +1,6 @@
+
+
+
 let cart = document.querySelector(".cart-card__recap");
 let copyOfLS = JSON.parse(localStorage.getItem("products"));
 
@@ -75,7 +78,8 @@ function countTotalInCart() {
 
   // Additionner les valeurs du tableau pour avoir le prix total
   const reducer = (acc, currentVal) => acc + currentVal;
-  arrayOfPrice = arrayOfPrice.reduce(reducer);
+  let somme = 0;
+  arrayOfPrice = arrayOfPrice.reduce(reducer, somme);
 
   // Affichage du prix avec formatage €
   totalPrice.innerText = `Total : ${(arrayOfPrice = new Intl.NumberFormat(
